@@ -73,20 +73,18 @@ public class BusinessException extends RuntimeException {
         return this;
     }
     public APIResponse response() {
-        if(this.apiResponse != null) {
-            return this.apiResponse;
-        } else {
+        if (this.apiResponse == null) {
             this.apiResponse = APIResponse.widthCode(this.getErrorCode());
-            if(this.getErrorMessageArguments() != null && this.getErrorMessageArguments().length > 0) {
+            if (this.getErrorMessageArguments() != null && this.getErrorMessageArguments().length > 0) {
                 try {
-                    this.apiResponse.setMsg(MessageFormat.format(this.apiResponse.getMsg(), this.getErrorMessageArguments()));
+                    this.apiResponse.setMsg(MessageFormat.format(this.apiResponse.getMsg(), (Object[]) this.getErrorMessageArguments()));
                 } catch (Exception var2) {
                     logger.error(var2.getMessage());
                 }
             }
 
-            return this.apiResponse;
         }
+        return this.apiResponse;
     }
 
 }
